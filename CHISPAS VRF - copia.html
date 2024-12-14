@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recorrido Vital de Teófilo Rojas "Chispas"</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        #map {
+            height: 600px;
+            width: 100%;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+        }
+        .popup-content {
+            min-width: 250px;
+            max-width: 350px;
+        }
+        .popup-content img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <h1>Recorrido Vital de Teófilo Rojas "Chispas"</h1>
+    <div id="map"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+    <script>
+        // Inicializar el mapa centrado en Tolima, Colombia
+        var map = L.map('map').setView([4.5, -75.5], 8);
+
+        // Añadir la capa base del mapa
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Datos de los lugares clave
+        var lugares = [
+            {
+                nombre: "Rovira, Tolima",
+                coordenadas: [4.239, -75.239],
+                descripcion: "Lugar de nacimiento de Teófilo Rojas Varón en 1930.",
+                detalles: "Municipio ubicado en el departamento del Tolima, región central de Colombia. Aquí nació quien más tarde sería conocido como 'Chispas', en un contexto de tensiones políticas previas a La Violencia.",
+                imagen: "FOTO I.png"
+            },
+            {
+                nombre: "Guerrilla Liberal en Tolima",
+                coordenadas: [4.5, -75.3],
+                descripcion: "A los 13 años, 'Chispas' se unió a la guerrilla liberal para defender a su comunidad.",
+                detalles: "Durante La Violencia (1948-1958), el Tolima fue epicentro de enfrentamientos entre liberales y conservadores. Las guerrillas liberales surgieron como respuesta a la persecución política.",
+                imagen: "FOTO II.jpg"
+            },
+            {
+                nombre: "Zona de Operaciones en el Quindío",
+                coordenadas: [4.529, -75.640],
+                descripcion: "Su cuadrilla operaba en Tolima y Quindío, brindando 'protección' a cambio de apoyo económico.",
+                detalles: "La región del Quindío se convirtió en su principal zona de influencia. Las cuadrillas controlaban territorios y establecían sistemas de cobros por protección a terratenientes y comerciantes.",
+                imagen: "FOTO III.jpg"
+            },
+            {
+                nombre: "Vereda La Albania, Calarcá, Quindío",
+                coordenadas: [4.5, -75.65],
+                descripcion: "Lugar donde 'Chispas' fue emboscado y asesinado por el ejército en enero de 1963.",
+                detalles: "Tras rechazar una amnistía ofrecida por el gobierno, 'Chispas' continuó sus actividades hasta su muerte en esta vereda del municipio de Calarcá, marcando el fin de una era en la historia del bandolerismo en Colombia.",
+                imagen: "FOTO IV.jpg"
+            }
+        ];
+
+        // Añadir marcadores y popups para cada lugar
+        lugares.forEach(function(lugar) {
+            var marcador = L.marker(lugar.coordenadas).addTo(map);
+            var popupContent = '<div class="popup-content">' +
+                               '<h3 style="margin: 0 0 8px 0; color: #2c5282;">' + lugar.nombre + '</h3>' +
+                               '<p style="margin: 0 0 8px 0;"><strong>' + lugar.descripcion + '</strong></p>' +
+                               '<p style="margin: 0 0 8px 0; font-size: 0.9em;">' + lugar.detalles + '</p>' +
+                               '<img src="' + lugar.imagen + '" alt="Imagen histórica de ' + lugar.nombre + '" style="width: 100%; max-width: 300px; height: auto; margin-top: 8px; border-radius: 4px;">' +
+                               '</div>';
+            marcador.bindPopup(popupContent);
+        });
+
+        // Trazar el recorrido
+        var recorrido = L.polyline(lugares.map(l => l.coordenadas), {
+            color: '#2c5282',
+            weight: 3,
+            opacity: 0.7,
+            dashArray: '5, 10'
+        }).addTo(map);
+
+        // Ajustar la vista para mostrar todo el recorrido
+        map.fitBounds(recorrido.getBounds(), {
+            padding: [50, 50]
+        });
+    </script>
+</body>
+</html>
